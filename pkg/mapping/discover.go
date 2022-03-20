@@ -1,6 +1,9 @@
 package mapping
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 type Mapping struct {
 	KeyboardLayout Layout
@@ -46,7 +49,9 @@ func (m *Mapping) FindTypos(key rune) ([]rune, error) {
 		typos = append(typos, m.KeyboardLayout[pos.x-1][pos.y])
 	}
 	if pos.x < len(m.KeyboardLayout)-1 {
-		typos = append(typos, m.KeyboardLayout[pos.x+1][pos.y])
+		selectedRow := m.KeyboardLayout[pos.x+1]
+		yPos := int(math.Min(float64(pos.y), float64(len(selectedRow)-1)))
+		typos = append(typos, selectedRow[yPos])
 	}
 
 	// Second go left and right
